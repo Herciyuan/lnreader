@@ -1,11 +1,13 @@
 # Este es un script de workflow de GitHub para construir y publicar la aplicación LNReader en GitHub Releases
 name: Build and Release
 
-# El workflow se ejecuta cuando se crea una nueva etiqueta que empieza por 'v'
+# El workflow se ejecuta cuando se crea una nueva etiqueta que empieza por 'v' o cuando se hace un commit a la rama main
 on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
 
 # El workflow tiene un solo trabajo llamado 'build'
 jobs:
@@ -44,7 +46,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          # Se usa el nombre de la etiqueta como el nombre de la versión
+          # Se usa el nombre de la etiqueta o el hash del commit como el nombre de la versión
           name: ${{ github.ref }}
           # Se usa el mensaje del commit como la descripción de la versión
           body: ${{ github.event.head_commit.message }}
